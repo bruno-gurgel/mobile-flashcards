@@ -23,13 +23,20 @@ export default function DeckList() {
 				<Text style={styles.totalDecks__number}> {Object.keys(decks).length}</Text>
 			</Text>
 			{!isLoading ? (
-				Object.keys(decks).map((deck) => (
-					<View style={styles.deckBox}>
-						<Text key={decks[deck].title} style={styles.deck}>
-							{deck}
-						</Text>
-					</View>
-				))
+				Object.keys(decks).map((deck) => {
+					const key = decks[deck].id;
+					const numberOfCards = decks[deck].questions.length;
+					return (
+						<View style={styles.deckBox}>
+							<Text key={key} style={styles.deck}>
+								{deck}
+							</Text>
+							<Text style={styles.cardsNumber}>
+								{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
+							</Text>
+						</View>
+					);
+				})
 			) : (
 				<Text>Loading...</Text>
 			)}
@@ -47,6 +54,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		alignSelf: "center",
 		fontSize: 14,
+		color: "#737373",
 	},
 	totalDecks__number: {
 		color: "#0000FF",
@@ -59,9 +67,11 @@ const styles = StyleSheet.create({
 	},
 	deck: {
 		fontSize: 24,
-		color: "#000",
+		color: "#444",
 		textAlign: "center",
-
-		// height: 40,
+	},
+	cardsNumber: {
+		textAlign: "center",
+		color: "#8c8c8c",
 	},
 });
