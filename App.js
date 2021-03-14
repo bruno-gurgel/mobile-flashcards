@@ -1,9 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DeckList from "./components/DeckList";
 import { createStackNavigator } from "@react-navigation/stack";
+import IndividualDeck from "./components/IndividualDeck";
+import NewDeck from "./components/NewDeck";
 
 const Stack = createStackNavigator();
 
@@ -14,8 +16,37 @@ export default function App() {
 				<Stack.Screen
 					name="Home"
 					component={DeckList}
-					options={{
+					options={({ navigation }) => ({
 						title: "Deck List",
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+						headerRight: () => (
+							<Button
+								title="Add"
+								color="#00ccff"
+								onPress={() => navigation.navigate("New")}
+							/>
+						),
+					})}
+				/>
+				<Stack.Screen
+					name="Deck"
+					component={IndividualDeck}
+					options={({ route }) => ({
+						title: route.params.title,
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+					})}
+				/>
+				<Stack.Screen
+					name="New"
+					component={NewDeck}
+					options={{
+						title: "New Deck",
 						headerStyle: {
 							backgroundColor: "#444",
 						},
