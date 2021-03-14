@@ -1,6 +1,7 @@
 const decks = {
 	React: {
 		title: "React",
+		id: "x12wtmxeo8cn8s6mhedca",
 		questions: [
 			{
 				question: "What is React?",
@@ -14,6 +15,7 @@ const decks = {
 	},
 	JavaScript: {
 		title: "JavaScript",
+		id: "05y619j8ise5grhskyiipsq",
 		questions: [
 			{
 				question: "What is a closure?",
@@ -23,6 +25,12 @@ const decks = {
 		],
 	},
 };
+
+function generateID() {
+	return (
+		Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+	);
+}
 
 export function _getDecks() {
 	return new Promise((res, rej) => {
