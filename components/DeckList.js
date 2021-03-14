@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { Header } from "react-native-elements";
 import { getAllDecks } from "../utils/api";
 
-export default function DeckList() {
+export default function DeckList({ navigation }) {
 	const [isLoading, updateIsLoading] = useState(false);
 	const [decks, updateDecks] = useState({});
 	useEffect(() => {
@@ -27,14 +28,20 @@ export default function DeckList() {
 					const key = decks[deck].id;
 					const numberOfCards = decks[deck].questions.length;
 					return (
-						<View style={styles.deckBox}>
-							<Text key={key} style={styles.deck}>
-								{deck}
-							</Text>
+						<TouchableOpacity
+							key={key}
+							style={styles.deckBox}
+							onPress={() =>
+								navigation.navigate("Deck", {
+									title: deck,
+								})
+							}
+						>
+							<Text style={styles.deck}>{deck}</Text>
 							<Text style={styles.cardsNumber}>
 								{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
 							</Text>
-						</View>
+						</TouchableOpacity>
 					);
 				})
 			) : (
