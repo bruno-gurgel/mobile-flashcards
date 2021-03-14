@@ -1,28 +1,29 @@
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
-import { Header } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DeckList from "./components/DeckList";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
 
 export default function App() {
 	return (
-		<SafeAreaView>
-			<Header
-				placement="center"
-				centerComponent={{
-					text: "Mobile Flashcards",
-					style: { color: "#fff", fontSize: 24 },
-				}}
-				backgroundColor="#444"
-			/>
-			<View style={styles.container}>
-				<Text>Test</Text>
-				<Text>
-					<DeckList />
-				</Text>
-			</View>
-		</SafeAreaView>
+		<NavigationContainer>
+			<Stack.Navigator initialRouteName="Home">
+				<Stack.Screen
+					name="Home"
+					component={DeckList}
+					options={{
+						title: "Deck List",
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+					}}
+				/>
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 }
 
@@ -32,6 +33,5 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
-		marginTop: 50,
 	},
 });
