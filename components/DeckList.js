@@ -34,6 +34,7 @@ export default function DeckList({ navigation }) {
 							onPress={() =>
 								navigation.navigate("Deck", {
 									title: deck,
+									numberOfCards,
 								})
 							}
 						>

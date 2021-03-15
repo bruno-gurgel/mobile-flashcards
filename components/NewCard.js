@@ -1,23 +1,33 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Input } from "react-native-elements";
-import RadioButtonRN from "radio-buttons-react-native";
 import RadioForm, {
 	RadioButton,
 	RadioButtonInput,
 	RadioButtonLabel,
 } from "react-native-simple-radio-button";
+import { addCard } from "../utils/api";
 
 const radio_props = [
 	{ label: "Correct", value: true },
 	{ label: "Incorrect", value: false },
 ];
 
-export default function NewCard() {
+export default function NewCard({ route }) {
 	const [input, updateInput] = useState("");
 	const [selectedAnswer, updateSelectedAnswer] = useState(null);
+
+	const handleSubmit = () => {
+		if (input !== "" && selectedAnswer !== null) {
+			const deck = route.params.deck;
+			const question = input;
+			addCard(deck, question, selectedAnswer);
+		} else {
+			alert("You must fill the question and the answer!");
+		}
+	};
 	return (
-		<View style={styles.container}>
+		<KeyboardAvoidingView behavior="padding" style={styles.container}>
 			<Input
 				placeholder="Type your question here"
 				value={input}
@@ -25,15 +35,23 @@ export default function NewCard() {
 			/>
 			<RadioForm
 				radio_props={radio_props}
+				initial={null}
 				formHorizontal={true}
 				labelHorizontal={false}
 				buttonColor={"#444"}
 				onPress={(value) => updateSelectedAnswer(value)}
 			/>
-			<TouchableOpacity style={styles.button}>
+			<TouchableOpacity
+				style={[
+					styles.button,
+					input === "" || selectedAnswer === null ? styles.disabled : styles.active,
+				]}
+				onPress={handleSubmit}
+				disabled={input === "" || selectedAnswer === null}
+			>
 				<Text style={styles.buttonText}>Submit</Text>
 			</TouchableOpacity>
-		</View>
+		</KeyboardAvoidingView>
 	);
 }
 
@@ -51,11 +69,16 @@ const styles = StyleSheet.create({
 		height: 60,
 		borderRadius: 8,
 		marginTop: 20,
-		backgroundColor: "#444",
 	},
 	buttonText: {
 		alignSelf: "center",
 		color: "#fff",
 		fontSize: 20,
+	},
+	active: {
+		backgroundColor: "#444",
+	},
+	disabled: {
+		backgroundColor: "#999999",
 	},
 });

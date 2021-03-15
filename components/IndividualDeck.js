@@ -1,10 +1,9 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { View } from "react-native";
-import { Text, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Divider } from "react-native-elements";
 
-export default function IndividualDeck({ route }) {
+export default function IndividualDeck({ navigation, route }) {
 	const numberOfCards = route.params.numberOfCards;
 
 	return (
@@ -17,7 +16,14 @@ export default function IndividualDeck({ route }) {
 				</Text>
 			</View>
 			<View>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() =>
+						navigation.navigate("NewCard", {
+							deck: route.params.title,
+						})
+					}
+				>
 					<Text style={styles.buttonText}>Add Card</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
@@ -61,5 +67,6 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		alignSelf: "center",
+		fontSize: 20,
 	},
 });
