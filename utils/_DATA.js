@@ -4,12 +4,16 @@ const decks = {
 		id: "x12wtmxeo8cn8s6mhedca",
 		questions: [
 			{
-				question: "What is React?",
-				answer: "A library for managing user interfaces",
+				question: "React was created by facebook?",
+				answer: "True",
 			},
 			{
-				question: "Where do you make Ajax requests in React?",
-				answer: "The useEffect hook",
+				question: "Are class components the best option for creating components in React?",
+				answer: "False",
+			},
+			{
+				question: "Do useMemo and useCallback do the same thing?",
+				answer: "False",
 			},
 		],
 	},
@@ -18,9 +22,8 @@ const decks = {
 		id: "05y619j8ise5grhskyiipsq",
 		questions: [
 			{
-				question: "What is a closure?",
-				answer:
-					"The combination of a function and the lexical environment within which that function was declared.",
+				question: "Is closure related to lexical environment?",
+				answer: "True",
 			},
 		],
 	},
@@ -37,6 +40,49 @@ export function _getDecks() {
 		setTimeout(() => res({ ...decks }), 1000);
 	});
 }
-export function _getDeck() {}
-export function _saveDeckTitle() {}
-export function _addCardToDeck() {}
+export function _getDeck(deck) {
+	return new Promise((res, rej) => {
+		setTimeout(() => res(decks[deck]), 1000);
+	});
+}
+export function _saveDeckTitle(title) {
+	return new Promise((res, rej) => {
+		setTimeout(
+			() =>
+				res(
+					(decks = {
+						...decks,
+						[title]: {
+							title,
+							id: generateID(),
+							questions: [],
+						},
+					})
+				),
+			1000
+		);
+	});
+}
+export function _addCardToDeck(deck, question, answer) {
+	return new Promise((res, rej) => {
+		setTimeout(
+			() =>
+				res(
+					(decks = {
+						...decks,
+						[deck]: {
+							...deck,
+							questions: [
+								...questions,
+								{
+									question,
+									answer,
+								},
+							],
+						},
+					})
+				),
+			1000
+		);
+	});
+}
