@@ -6,6 +6,7 @@ import DeckList from "./components/DeckList";
 import { createStackNavigator } from "@react-navigation/stack";
 import IndividualDeck from "./components/IndividualDeck";
 import NewDeck from "./components/NewDeck";
+import NewCard from "./components/NewCard";
 
 const Stack = createStackNavigator();
 
@@ -26,7 +27,7 @@ export default function App() {
 							<Button
 								title="Add"
 								color="#00ccff"
-								onPress={() => navigation.navigate("New")}
+								onPress={() => navigation.navigate("NewDeck")}
 							/>
 						),
 					})}
@@ -43,10 +44,21 @@ export default function App() {
 					})}
 				/>
 				<Stack.Screen
-					name="New"
+					name="NewDeck"
 					component={NewDeck}
 					options={{
-						title: "New Deck",
+						title: "Add Deck",
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+					}}
+				/>
+				<Stack.Screen
+					name="NewCard"
+					component={NewCard}
+					options={{
+						title: "Add Card",
 						headerStyle: {
 							backgroundColor: "#444",
 						},
