@@ -1,4 +1,4 @@
-const decks = {
+let decks = {
 	React: {
 		title: "React",
 		id: "x12wtmxeo8cn8s6mhedca",
@@ -71,9 +71,9 @@ export function _addCardToDeck(deck, question, answer) {
 					(decks = {
 						...decks,
 						[deck]: {
-							...deck,
+							...decks[deck],
 							questions: [
-								...questions,
+								...decks[deck].questions,
 								{
 									question,
 									answer,
