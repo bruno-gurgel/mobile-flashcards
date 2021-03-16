@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import DeckList from "./components/DeckList";
 import { createStackNavigator } from "@react-navigation/stack";
 import IndividualDeck from "./components/IndividualDeck";

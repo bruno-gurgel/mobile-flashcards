@@ -4,12 +4,12 @@ import { Text, View, StyleSheet } from "react-native";
 import { Divider } from "react-native-elements";
 
 export default function IndividualDeck({ navigation, route }) {
-	const numberOfCards = route.params.numberOfCards;
+	const { deckTitle, numberOfCards } = route.params;
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.titleContainer}>
-				<Text style={styles.title}>{route.params.title} Deck</Text>
+				<Text style={styles.title}>{deckTitle} Deck</Text>
 				<Divider style={{ backgroundColor: "black" }}></Divider>
 				<Text style={styles.cardsNumber}>
 					{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
@@ -20,7 +20,7 @@ export default function IndividualDeck({ navigation, route }) {
 					style={styles.button}
 					onPress={() =>
 						navigation.navigate("NewCard", {
-							deck: route.params.title,
+							deckTitle: route.params.deckTitle,
 						})
 					}
 				>
