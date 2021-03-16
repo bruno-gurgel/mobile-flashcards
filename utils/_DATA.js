@@ -1,4 +1,4 @@
-let decks = {
+export let initialData = {
 	React: {
 		title: "React",
 		id: "x12wtmxeo8cn8s6mhedca",
@@ -37,12 +37,12 @@ function generateID() {
 
 export function _getDecks() {
 	return new Promise((res, rej) => {
-		setTimeout(() => res({ ...decks }), 1000);
+		setTimeout(() => res({ ...initialData }), 1000);
 	});
 }
 export function _getDeck(deck) {
 	return new Promise((res, rej) => {
-		setTimeout(() => res(decks[deck]), 1000);
+		setTimeout(() => res(initialData[deck]), 1000);
 	});
 }
 export function _saveDeckTitle(title) {
@@ -50,7 +50,7 @@ export function _saveDeckTitle(title) {
 		setTimeout(
 			() =>
 				res(
-					(decks = {
+					(initialData = {
 						...decks,
 						[title]: {
 							title,
@@ -68,7 +68,7 @@ export function _addCardToDeck(deck, question, answer) {
 		setTimeout(
 			() =>
 				res(
-					(decks = {
+					(initialData = {
 						...decks,
 						[deck]: {
 							...decks[deck],
