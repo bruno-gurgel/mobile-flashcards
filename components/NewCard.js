@@ -6,22 +6,35 @@ import RadioForm, {
 	RadioButtonInput,
 	RadioButtonLabel,
 } from "react-native-simple-radio-button";
-import { addCard } from "../utils/api";
+import { addCard, addCardToDeck, getDeck, getDecks } from "../utils/api";
 
 const radio_props = [
 	{ label: "Correct", value: true },
 	{ label: "Incorrect", value: false },
 ];
 
-export default function NewCard({ route }) {
+export default function NewCard({ navigation, route }) {
 	const [input, updateInput] = useState("");
 	const [selectedAnswer, updateSelectedAnswer] = useState(null);
 
+	const isDisabled = () => (input === "" || selectedAnswer === null ? true : false);
+
 	const handleSubmit = () => {
 		if (input !== "" && selectedAnswer !== null) {
-			const deck = route.params.deck;
-			const question = input;
-			addCard(deck, question, selectedAnswer);
+			const deck = route.params.deckTitle;
+			const card = {
+				question: input,
+				answer: selectedAnswer,
+			};
+			addCardToDeck(deck, card).then(() => {
+				getDeck(deck).then((updatedDeck) =>
+					navigation.navigate("Deck", {
+						title: deck,
+						deck: updatedDeck,
+						numberOfCards: updatedDeck.questions.length,
+					})
+				);
+			});
 		} else {
 			alert("You must fill the question and the answer!");
 		}
@@ -42,12 +55,9 @@ export default function NewCard({ route }) {
 				onPress={(value) => updateSelectedAnswer(value)}
 			/>
 			<TouchableOpacity
-				style={[
-					styles.button,
-					input === "" || selectedAnswer === null ? styles.disabled : styles.active,
-				]}
+				style={[styles.button, isDisabled() ? styles.disabled : styles.active]}
 				onPress={handleSubmit}
-				disabled={input === "" || selectedAnswer === null}
+				disabled={isDisabled()}
 			>
 				<Text style={styles.buttonText}>Submit</Text>
 			</TouchableOpacity>
@@ -80,5 +90,6 @@ const styles = StyleSheet.create({
 	},
 	disabled: {
 		backgroundColor: "#999999",
+		borderWidth: 0,
 	},
 });

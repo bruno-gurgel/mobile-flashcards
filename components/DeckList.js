@@ -1,29 +1,35 @@
+import { useIsFocused } from "@react-navigation/core";
 import React from "react";
 import { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
-import { Header } from "react-native-elements";
-import { getAllDecks } from "../utils/api";
+import { getDecks } from "../utils/api";
 
-export default function DeckList({ navigation }) {
+export default function DeckList(props) {
+	const { navigation, route } = props;
 	const [isLoading, updateIsLoading] = useState(false);
 	const [decks, updateDecks] = useState({});
-	useEffect(() => {
+
+	const isFocused = useIsFocused();
+
+	const fetchData = async () => {
 		updateIsLoading(true);
-		getAllDecks().then((data) => {
-			updateDecks(data);
-			updateIsLoading(false);
-			return data;
-		});
-	}, []);
+		const allDecks = await getDecks();
+		updateDecks(allDecks);
+		updateIsLoading(false);
+	};
+
+	useEffect(() => {
+		isFocused && fetchData();
+	}, [isFocused]);
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.totalDecks}>
 				Total decks:
-				<Text style={styles.totalDecks__number}> {Object.keys(decks).length}</Text>
+				<Text style={styles.totalDecks__number}>{decks && Object.keys(decks).length}</Text>
 			</Text>
-			{!isLoading ? (
+			{!isLoading && decks ? (
 				Object.keys(decks).map((deck) => {
 					const key = decks[deck].id;
 					const numberOfCards = decks[deck].questions.length;
@@ -33,7 +39,7 @@ export default function DeckList({ navigation }) {
 							style={styles.deckBox}
 							onPress={() =>
 								navigation.navigate("Deck", {
-									title: deck,
+									deckTitle: deck,
 									numberOfCards,
 								})
 							}
