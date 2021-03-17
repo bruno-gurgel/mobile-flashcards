@@ -51,9 +51,9 @@ export const addCardToDeck = (title, card) => {
 	}
 };
 
-export const saveDeckTitle = async (title) => {
+export const saveDeckTitle = (title) => {
 	try {
-		AsyncStorage.mergeItem(
+		return AsyncStorage.mergeItem(
 			DECKS_STORAGE_KEY,
 			JSON.stringify({
 				[title]: {
@@ -65,5 +65,20 @@ export const saveDeckTitle = async (title) => {
 		).then((result) => console.log(result));
 	} catch (e) {
 		alert("Failed to add deck!");
+	}
+};
+
+export const removeDeck = (title) => {
+	try {
+		return AsyncStorage.getItem(DECKS_STORAGE_KEY).then((result) => {
+			const data = JSON.parse(result);
+			delete data[title];
+
+			return AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data)).then(() =>
+				alert("Deck was successfully deleted!")
+			);
+		});
+	} catch {
+		alert("Failed to delete deck!");
 	}
 };

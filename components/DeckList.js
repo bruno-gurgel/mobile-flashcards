@@ -3,25 +3,27 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
-import { getDecks } from "../utils/api";
+import { getDecks, removeDeck } from "../utils/api";
 
-export default function DeckList(props) {
-	const { navigation, route } = props;
+export default function DeckList({ navigation }) {
 	const [isLoading, updateIsLoading] = useState(false);
 	const [decks, updateDecks] = useState({});
 
 	const isFocused = useIsFocused();
 
-	const fetchData = async () => {
+	const fetchData = () => {
 		updateIsLoading(true);
-		const allDecks = await getDecks();
-		updateDecks(allDecks);
-		updateIsLoading(false);
+		getDecks().then((allDecks) => {
+			updateDecks(allDecks);
+			updateIsLoading(false);
+		});
 	};
 
 	useEffect(() => {
 		isFocused && fetchData();
 	}, [isFocused]);
+
+	const handleDeleteDeck = (deckTitle) => removeDeck(deckTitle).then(() => fetchData());
 
 	const renderItem = ({ item }) => {
 		const numberOfCards = decks[item].questions.length;
@@ -35,10 +37,15 @@ export default function DeckList(props) {
 					})
 				}
 			>
-				<Text style={styles.deck}>{item}</Text>
-				<Text style={styles.cardsNumber}>
-					{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
-				</Text>
+				<View>
+					<Text style={styles.deck}>{item}</Text>
+					<Text style={styles.cardsNumber}>
+						{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
+					</Text>
+				</View>
+				<TouchableOpacity style={styles.delete} onPress={() => handleDeleteDeck(item)}>
+					<Text style={styles.deleteText}>Delete Deck</Text>
+				</TouchableOpacity>
 			</TouchableOpacity>
 		);
 	};
@@ -78,6 +85,8 @@ const styles = StyleSheet.create({
 		color: "#0000FF",
 	},
 	deckBox: {
+		flexDirection: "row",
+		justifyContent: "space-between",
 		alignSelf: "stretch",
 		padding: 10,
 		marginBottom: 15,
@@ -86,10 +95,17 @@ const styles = StyleSheet.create({
 	deck: {
 		fontSize: 24,
 		color: "#444",
-		textAlign: "center",
 	},
 	cardsNumber: {
-		textAlign: "center",
 		color: "#8c8c8c",
+	},
+	delete: {
+		borderWidth: 1,
+		padding: 5,
+		justifyContent: "center",
+	},
+	deleteText: {
+		alignSelf: "center",
+		fontSize: 16,
 	},
 });
