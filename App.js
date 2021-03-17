@@ -1,15 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import DeckList from "./components/DeckList";
 import { createStackNavigator } from "@react-navigation/stack";
 import IndividualDeck from "./components/IndividualDeck";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
+import { setLocalNotification } from "./utils/helpers";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+	useEffect(() => {
+		setLocalNotification();
+	}, []);
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Home">
