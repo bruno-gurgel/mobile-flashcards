@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Input } from "react-native-elements";
+import { saveDeckTitle } from "../utils/api";
 
-export default function NewDeck() {
+export default function NewDeck({ navigation }) {
 	const [input, updateInput] = useState("");
 	const isDisabled = () => (input === "" ? true : false);
+
+	const handleSubmit = async () => saveDeckTitle(input).then(() => navigation.navigate("Home"));
+
 	return (
 		<KeyboardAvoidingView behavior="padding" style={styles.container}>
 			<Text style={styles.heading}>What is the title of your new deck?</Text>
@@ -16,6 +20,7 @@ export default function NewDeck() {
 			<TouchableOpacity
 				style={[styles.button, isDisabled() ? styles.disabled : styles.active]}
 				disabled={isDisabled()}
+				onPress={handleSubmit}
 			>
 				<Text style={styles.buttonText}>Submit</Text>
 			</TouchableOpacity>
