@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Input } from "react-native-elements";
-import RadioForm, {
-	RadioButton,
-	RadioButtonInput,
-	RadioButtonLabel,
-} from "react-native-simple-radio-button";
-import { addCard, addCardToDeck, getDeck, getDecks } from "../utils/api";
+import RadioForm from "react-native-simple-radio-button";
+import { addCardToDeck, getDeck } from "../utils/api";
 
 const radio_props = [
 	{ label: "Correct", value: true },
