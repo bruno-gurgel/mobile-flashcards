@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { _addCardToDeck, _getDecks, initialData } from "./_DATA";
+import { _addCardToDeck, _getDecks, initialData, generateID } from "./_DATA";
 
 const DECKS_STORAGE_KEY = "MobileFlashcards:decks";
 
@@ -48,5 +48,22 @@ export const addCardToDeck = (title, card) => {
 		);
 	} catch (e) {
 		alert("Failed to add card!");
+	}
+};
+
+export const saveDeckTitle = async (title) => {
+	try {
+		AsyncStorage.mergeItem(
+			DECKS_STORAGE_KEY,
+			JSON.stringify({
+				[title]: {
+					title,
+					id: generateID(),
+					questions: [],
+				},
+			})
+		).then((result) => console.log(result));
+	} catch (e) {
+		alert("Failed to add deck!");
 	}
 };

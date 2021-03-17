@@ -29,11 +29,8 @@ export let initialData = {
 	},
 };
 
-function generateID() {
-	return (
-		Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-	);
-}
+export const generateID = () =>
+	Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 export function _getDecks() {
 	return new Promise((res, rej) => {
