@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { _addCardToDeck, _getDecks, initialData, generateID } from "./_DATA";
-
-const DECKS_STORAGE_KEY = "MobileFlashcards:decks";
+import { DECKS_STORAGE_KEY } from "./helpers";
 
 export function addCard(deck, question, answer) {
 	return _addCardToDeck(deck, question, answer);
