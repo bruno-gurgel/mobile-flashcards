@@ -1,5 +1,6 @@
+import { useIsFocused } from "@react-navigation/core";
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
 import { getDeck } from "../utils/api";
 import { clearLocalNotification, setLocalNotification } from "../utils/helpers";
 import AnswerQuiz from "./AnswerQuiz";
@@ -14,12 +15,25 @@ export default function Quiz({ route, navigation }) {
 	const [incorrect, updateIncorrect] = useState(0);
 	const [buttonText, updateButtonText] = useState("Next Card");
 
+	const resetQuiz = () => {
+		updateCorrect(0);
+		updateIncorrect(0);
+		updateIndex(0);
+		updateButtonText("Next Card");
+		updateIsQuestion(true);
+	};
+
+	const isFocused = useIsFocused();
+	const deckLength = () => thisDeck.questions.length;
+
+	useEffect(() => {
+		isFocused && resetQuiz();
+	}, [isFocused]);
+
 	useEffect(() => {
 		const deck = deckTitle.replace(/ /g, "");
 		getDeck(deck).then((response) => updateThisDeck(response));
 	}, []);
-
-	const deckLength = () => thisDeck.questions.length;
 
 	const answerCheck = (answer) => {
 		const correctAnswer = thisDeck.questions[index].answer;
@@ -28,6 +42,9 @@ export default function Quiz({ route, navigation }) {
 	};
 
 	const handleAnswer = (answer) => {
+		if (deckLength() === 1) {
+			updateButtonText("Show Score");
+		}
 		answerCheck(answer);
 		updateIsQuestion(false);
 		clearLocalNotification().then(() => setLocalNotification());
@@ -35,9 +52,13 @@ export default function Quiz({ route, navigation }) {
 
 	const handleNextCard = () => {
 		if (index + 1 === deckLength()) {
-			return navigation.navigate("Score");
+			return navigation.navigate("Score", {
+				correctAnswers: correct,
+				incorrectAnswers: incorrect,
+				deckTitle,
+			});
 		}
-		if (index + 2 === deckLength()) {
+		if (index + 2 === deckLength() || deckLength() === 1) {
 			updateButtonText("Show Score");
 		}
 		updateIndex(index + 1);
