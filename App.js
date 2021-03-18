@@ -2,13 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import DeckList from "./components/DeckList";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
 import IndividualDeck from "./components/IndividualDeck";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
 import { setLocalNotification } from "./utils/helpers";
 import Quiz from "./components/Quiz";
-
+import Score from "./components/Score";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -79,6 +79,24 @@ export default function App() {
 						},
 						headerTintColor: "#fff",
 					}}
+				/>
+				<Stack.Screen
+					name="Score"
+					component={Score}
+					options={({ navigation }) => ({
+						title: "Score",
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+						headerLeft: () => (
+							<HeaderBackButton
+								label="Deck"
+								tintColor="#fff"
+								onPress={() => navigation.navigate("Deck")}
+							/>
+						),
+					})}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
