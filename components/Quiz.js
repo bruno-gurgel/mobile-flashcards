@@ -1,68 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { getDeck } from "../utils/api";
+import QuestionQuiz from "./QuestionQuiz";
 
 export default function Quiz({ route }) {
 	const { deckTitle } = route.params;
-	const [thisDeck, updateThisDeck] = useState(null);
-	const [index, updateIndex] = useState(0);
+	const [isQuestion, updateIsQuestion] = useState(true);
 
-	useEffect(() => {
-		getDeck(deckTitle).then((response) => updateThisDeck(response));
-	}, []);
-
-	return (
-		<View style={styles.view}>
-			{thisDeck !== null && thisDeck.questions.length !== 0 ? (
-				<View style={styles.view}>
-					<Text style={styles.control}>{`${index + 1}/${
-						thisDeck.questions.length
-					}`}</Text>
-					<View style={styles.container}>
-						<View>
-							<Text style={styles.question}>
-								{thisDeck.questions[index].question}
-							</Text>
-							<TouchableOpacity>
-								<Text style={styles.flip}>Answer</Text>
-							</TouchableOpacity>
-						</View>
-						<View>
-							<TouchableOpacity
-								style={[
-									styles.button,
-									{
-										backgroundColor: "#009900",
-										marginBottom: 20,
-									},
-								]}
-							>
-								<Text style={styles.buttonText}>Correct</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={[
-									styles.button,
-									{
-										backgroundColor: "#ff0000",
-									},
-								]}
-							>
-								<Text style={styles.buttonText}>Incorrect</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				</View>
-			) : (
-				<View style={styles.noCards}>
-					<Text style={styles.question}>
-						Sorry, you cannot take a quiz because there are no cards in this deck.
-					</Text>
-				</View>
-			)}
-		</View>
-	);
+	return isQuestion === true ? <QuestionQuiz deckTitle={deckTitle} /> : null;
 }
-
 const styles = StyleSheet.create({
 	view: {
 		flex: 1,
