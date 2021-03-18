@@ -28,6 +28,7 @@ export default function IndividualDeck({ navigation, route }) {
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={[styles.button, { marginTop: 10, backgroundColor: "#444" }]}
+					onPress={() => navigation.navigate("Quiz")}
 				>
 					<Text style={[styles.buttonText, { color: "white" }]}>Start Quiz</Text>
 				</TouchableOpacity>

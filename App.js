@@ -7,6 +7,7 @@ import IndividualDeck from "./components/IndividualDeck";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
 import { setLocalNotification } from "./utils/helpers";
+import Quiz from "./components/Quiz";
 
 const Stack = createStackNavigator();
 
@@ -36,17 +37,6 @@ export default function App() {
 					})}
 				/>
 				<Stack.Screen
-					name="Deck"
-					component={IndividualDeck}
-					options={({ route }) => ({
-						title: route.params.title,
-						headerStyle: {
-							backgroundColor: "#444",
-						},
-						headerTintColor: "#fff",
-					})}
-				/>
-				<Stack.Screen
 					name="NewDeck"
 					component={NewDeck}
 					options={{
@@ -58,10 +48,32 @@ export default function App() {
 					}}
 				/>
 				<Stack.Screen
+					name="Deck"
+					component={IndividualDeck}
+					options={({ route }) => ({
+						title: route.params.title,
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+					})}
+				/>
+				<Stack.Screen
 					name="NewCard"
 					component={NewCard}
 					options={{
 						title: "Add Card",
+						headerStyle: {
+							backgroundColor: "#444",
+						},
+						headerTintColor: "#fff",
+					}}
+				/>
+				<Stack.Screen
+					name="Quiz"
+					component={Quiz}
+					options={{
+						title: "Quiz",
 						headerStyle: {
 							backgroundColor: "#444",
 						},
