@@ -11,16 +11,6 @@ export const clearLocalNotification = () => {
 	);
 };
 
-/* export const createNotification = () => {
-	return {
-		title: "Let's practice!",
-		body: "Don't forget to practice with your flashcards today!",
-		ios: {
-			sound: true,
-		},
-	};
-}; */
-
 export const setLocalNotification = () => {
 	AsyncStorage.getItem(NOTIFICATION_KEY)
 		.then(JSON.parse)
@@ -45,11 +35,6 @@ export const setLocalNotification = () => {
 								repeat: "day",
 							},
 						});
-
-						/* Notifications.scheduleNotificationAsync(createNotification(), {
-							time: tomorrow,
-							repeat: "day",
-						}); */
 
 						AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
 					}

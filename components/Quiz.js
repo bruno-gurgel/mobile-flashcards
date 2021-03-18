@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { getDeck } from "../utils/api";
+import { clearLocalNotification, setLocalNotification } from "../utils/helpers";
 import AnswerQuiz from "./AnswerQuiz";
 import QuestionQuiz from "./QuestionQuiz";
 
@@ -29,6 +30,7 @@ export default function Quiz({ route, navigation }) {
 	const handleAnswer = (answer) => {
 		answerCheck(answer);
 		updateIsQuestion(false);
+		clearLocalNotification().then(() => setLocalNotification());
 	};
 
 	const handleNextCard = () => {
