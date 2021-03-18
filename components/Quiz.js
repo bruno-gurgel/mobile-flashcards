@@ -1,54 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { getDeck } from "../utils/api";
+import AnswerQuiz from "./AnswerQuiz";
 import QuestionQuiz from "./QuestionQuiz";
 
-export default function Quiz({ route }) {
+export default function Quiz({ route, navigation }) {
 	const { deckTitle } = route.params;
 	const [isQuestion, updateIsQuestion] = useState(true);
+	const [thisDeck, updateThisDeck] = useState(null);
+	const [index, updateIndex] = useState(0);
+	const [correct, updateCorrect] = useState(0);
+	const [incorrect, updateIncorrect] = useState(0);
+	const [buttonText, updateButtonText] = useState("Next Card");
 
-	return isQuestion === true ? <QuestionQuiz deckTitle={deckTitle} /> : null;
+	useEffect(() => {
+		const deck = deckTitle.replace(/ /g, "");
+		getDeck(deck).then((response) => updateThisDeck(response));
+	}, []);
+
+	const deckLength = () => thisDeck.questions.length;
+
+	const answerCheck = (answer) => {
+		const correctAnswer = thisDeck.questions[index].answer;
+		answer === correctAnswer ? updateCorrect(correct + 1) : updateIncorrect(incorrect + 1);
+		return answer === correctAnswer ? true : false;
+	};
+
+	const handleAnswer = (answer) => {
+		answerCheck(answer);
+		updateIsQuestion(false);
+	};
+
+	const handleNextCard = () => {
+		if (index + 1 === deckLength()) {
+			return navigation.navigate("Score");
+		}
+		if (index + 2 === deckLength()) {
+			updateButtonText("Show Score");
+		}
+		updateIndex(index + 1);
+		updateIsQuestion(true);
+	};
+	return thisDeck !== null ? (
+		isQuestion === true ? (
+			<QuestionQuiz
+				thisDeck={thisDeck}
+				deckTitle={deckTitle}
+				onFlipPress={updateIsQuestion}
+				index={index}
+				onAnswer={handleAnswer}
+			/>
+		) : (
+			<AnswerQuiz
+				onFlipPress={updateIsQuestion}
+				thisDeck={thisDeck}
+				index={index}
+				onNextCard={handleNextCard}
+				buttonText={buttonText}
+			/>
+		)
+	) : (
+		<View>
+			<Text>Loading...</Text>
+		</View>
+	);
 }
-const styles = StyleSheet.create({
-	view: {
-		flex: 1,
-	},
-	container: {
-		flex: 1,
-		justifyContent: "space-around",
-		alignItems: "center",
-	},
-	control: {
-		marginTop: 20,
-		marginLeft: 15,
-		fontSize: 20,
-	},
-	question: {
-		fontSize: 30,
-		fontWeight: "bold",
-	},
-	flip: {
-		marginTop: 15,
-		fontSize: 18,
-		alignSelf: "center",
-		color: "#ff0000",
-	},
-	button: {
-		justifyContent: "center",
-		alignSelf: "center",
-		width: 150,
-		height: 60,
-		borderRadius: 8,
-	},
-	buttonText: {
-		alignSelf: "center",
-		fontSize: 20,
-		color: "#fff",
-	},
-	noCards: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		padding: 10,
-	},
-});

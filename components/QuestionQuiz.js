@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { getDeck } from "../utils/api";
 
 export default function QuestionQuiz(props) {
-	const { deckTitle } = props;
-
-	const [thisDeck, updateThisDeck] = useState(null);
-	const [index, updateIndex] = useState(0);
-
-	useEffect(() => {
-		getDeck(deckTitle).then((response) => updateThisDeck(response));
-	}, []);
+	const { thisDeck, onFlipPress, index, onAnswer } = props;
 
 	return (
 		<View style={styles.view}>
-			{thisDeck !== null && thisDeck.questions.length !== 0 ? (
+			{thisDeck.questions.length !== 0 ? (
 				<View style={styles.view}>
 					<Text style={styles.control}>{`${index + 1}/${
 						thisDeck.questions.length
@@ -24,7 +16,7 @@ export default function QuestionQuiz(props) {
 							<Text style={styles.question}>
 								{thisDeck.questions[index].question}
 							</Text>
-							<TouchableOpacity>
+							<TouchableOpacity onPress={() => onFlipPress(false)}>
 								<Text style={styles.flip}>Answer</Text>
 							</TouchableOpacity>
 						</View>
@@ -37,6 +29,7 @@ export default function QuestionQuiz(props) {
 										marginBottom: 20,
 									},
 								]}
+								onPress={() => onAnswer("Correct")}
 							>
 								<Text style={styles.buttonText}>Correct</Text>
 							</TouchableOpacity>
@@ -47,6 +40,7 @@ export default function QuestionQuiz(props) {
 										backgroundColor: "#ff0000",
 									},
 								]}
+								onPress={() => onAnswer("Incorrect")}
 							>
 								<Text style={styles.buttonText}>Incorrect</Text>
 							</TouchableOpacity>
