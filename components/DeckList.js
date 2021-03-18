@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
-import { getDecks, removeDeck } from "../utils/api";
+import { getDecks } from "../utils/api";
 
 export default function DeckList({ navigation }) {
 	const [isLoading, updateIsLoading] = useState(false);
@@ -23,8 +23,6 @@ export default function DeckList({ navigation }) {
 		isFocused && fetchData();
 	}, [isFocused]);
 
-	const handleDeleteDeck = (deckTitle) => removeDeck(deckTitle).then(() => fetchData());
-
 	const renderItem = ({ item }) => {
 		const numberOfCards = decks[item].questions.length;
 		return (
@@ -37,15 +35,10 @@ export default function DeckList({ navigation }) {
 					})
 				}
 			>
-				<View>
-					<Text style={styles.deck}>{item}</Text>
-					<Text style={styles.cardsNumber}>
-						{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
-					</Text>
-				</View>
-				<TouchableOpacity style={styles.delete} onPress={() => handleDeleteDeck(item)}>
-					<Text style={styles.deleteText}>Delete Deck</Text>
-				</TouchableOpacity>
+				<Text style={styles.deck}>{item}</Text>
+				<Text style={styles.cardsNumber}>
+					{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
+				</Text>
 			</TouchableOpacity>
 		);
 	};
