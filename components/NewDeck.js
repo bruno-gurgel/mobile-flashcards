@@ -7,7 +7,10 @@ export default function NewDeck({ navigation }) {
 	const [input, updateInput] = useState("");
 	const isDisabled = () => (input === "" ? true : false);
 
-	const handleSubmit = async () => saveDeckTitle(input).then(() => navigation.navigate("Home"));
+	const handleSubmit = async () => {
+		const trimmedInput = input.replace(/ /g, "");
+		return saveDeckTitle(trimmedInput, input).then(() => navigation.navigate("Home"));
+	};
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={styles.container}>

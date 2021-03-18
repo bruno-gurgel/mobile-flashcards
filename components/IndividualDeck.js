@@ -7,8 +7,10 @@ import { removeDeck } from "../utils/api";
 export default function IndividualDeck({ navigation, route }) {
 	const { deckTitle, numberOfCards } = route.params;
 
-	const handleDeleteDeck = (deckTitle) =>
-		removeDeck(deckTitle).then(() => navigation.navigate("Home"));
+	const handleDeleteDeck = (deckTitle) => {
+		const deck = deckTitle.replace(/ /g, "");
+		return removeDeck(deck).then(() => navigation.navigate("Home"));
+	};
 	return (
 		<View style={styles.container}>
 			<View style={styles.titleContainer}>

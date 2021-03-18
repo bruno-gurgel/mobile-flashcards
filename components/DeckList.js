@@ -30,12 +30,12 @@ export default function DeckList({ navigation }) {
 				style={styles.deckBox}
 				onPress={() =>
 					navigation.navigate("Deck", {
-						deckTitle: item,
+						deckTitle: decks[item].title,
 						numberOfCards,
 					})
 				}
 			>
-				<Text style={styles.deck}>{item}</Text>
+				<Text style={styles.deck}>{decks[item].title}</Text>
 				<Text style={styles.cardsNumber}>
 					{numberOfCards} {numberOfCards === 1 ? "card" : "cards"}
 				</Text>

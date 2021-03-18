@@ -34,12 +34,14 @@ export const getDeck = (id) => {
 };
 
 export const addCardToDeck = (title, card) => {
+	const trimmedTitle = title.replace(/ /g, "");
+
 	try {
-		return getDeck(title).then((data) =>
+		return getDeck(trimmedTitle).then((data) =>
 			AsyncStorage.mergeItem(
 				DECKS_STORAGE_KEY,
 				JSON.stringify({
-					[title]: {
+					[trimmedTitle]: {
 						questions: [...data.questions, card],
 					},
 				})
@@ -50,12 +52,12 @@ export const addCardToDeck = (title, card) => {
 	}
 };
 
-export const saveDeckTitle = (title) => {
+export const saveDeckTitle = (deck, title) => {
 	try {
 		return AsyncStorage.mergeItem(
 			DECKS_STORAGE_KEY,
 			JSON.stringify({
-				[title]: {
+				[deck]: {
 					title,
 					id: generateID(),
 					questions: [],

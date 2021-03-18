@@ -51,7 +51,7 @@ export default function App() {
 					name="Deck"
 					component={IndividualDeck}
 					options={({ route }) => ({
-						title: route.params.title,
+						title: route.params.deckTitle,
 						headerStyle: {
 							backgroundColor: "#444",
 						},

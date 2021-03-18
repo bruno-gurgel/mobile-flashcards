@@ -5,8 +5,8 @@ import RadioForm from "react-native-simple-radio-button";
 import { addCardToDeck, getDeck } from "../utils/api";
 
 const radio_props = [
-	{ label: "Correct", value: true },
-	{ label: "Incorrect", value: false },
+	{ label: "Correct", value: "Correct" },
+	{ label: "Incorrect", value: "Incorrect" },
 ];
 
 export default function NewCard({ navigation, route }) {
@@ -17,7 +17,8 @@ export default function NewCard({ navigation, route }) {
 
 	const handleSubmit = () => {
 		if (input !== "" && selectedAnswer !== null) {
-			const deck = route.params.deckTitle;
+			const deckTitle = route.params.deckTitle;
+			const deck = deckTitle.replace(/ /g, "");
 			const card = {
 				question: input,
 				answer: selectedAnswer,
@@ -25,7 +26,7 @@ export default function NewCard({ navigation, route }) {
 			addCardToDeck(deck, card).then(() => {
 				getDeck(deck).then((updatedDeck) =>
 					navigation.navigate("Deck", {
-						title: deck,
+						deckTitle,
 						deck: updatedDeck,
 						numberOfCards: updatedDeck.questions.length,
 					})
