@@ -8,7 +8,7 @@ export default function Score({ route, navigation }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.results}>
-				<Text style={styles.percentage}>{percentage}%</Text>
+				<Text style={styles.percentage}>{percentage.toFixed(0)}%</Text>
 				<Text style={styles.score}>
 					You answered correctly {correctAnswers} of {totalAnswers} questions!
 				</Text>
