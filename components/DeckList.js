@@ -1,11 +1,33 @@
-import { useIsFocused } from "@react-navigation/core";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useIsFocused } from "@react-navigation/core";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
-import { getDecks } from "../utils/api";
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { getDecks, resetData } from "../utils/api";
 
 export default function DeckList({ navigation }) {
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerLeft: () => (
+				<Button
+					title="Reset Data"
+					color="#FF0000"
+					onPress={() =>
+						Alert.alert("Reset Data?", "Are you sure you want to reset the data?", [
+							{
+								text: "Cancel",
+							},
+							{
+								text: "Delete",
+								onPress: () => resetData().then(() => fetchData()),
+							},
+						])
+					}
+				/>
+			),
+		});
+	}, [navigation]);
+
 	const [isLoading, updateIsLoading] = useState(false);
 	const [decks, updateDecks] = useState({});
 
