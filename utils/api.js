@@ -1,10 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { _addCardToDeck, _getDecks, initialData, generateID } from "./_DATA";
+import { initialData } from "./_DATA";
+import { generateID } from "./helpers";
 import { DECKS_STORAGE_KEY } from "./helpers";
-
-export function addCard(deck, question, answer) {
-	return _addCardToDeck(deck, question, answer);
-}
 
 export const handleInitialData = async () => {
 	try {
@@ -13,7 +10,7 @@ export const handleInitialData = async () => {
 			JSON.stringify(initialData)
 		);
 		return savedData;
-	} catch (e) {
+	} catch {
 		alert("Failed to save data.");
 	}
 };
@@ -28,7 +25,7 @@ export const getDeck = (id) => {
 		return AsyncStorage.getItem(DECKS_STORAGE_KEY).then((data) =>
 			data ? JSON.parse(data)[id] : null
 		);
-	} catch (e) {
+	} catch {
 		alert("Failed to get the deck!");
 	}
 };
@@ -47,7 +44,7 @@ export const addCardToDeck = (title, card) => {
 				})
 			)
 		);
-	} catch (e) {
+	} catch {
 		alert("Failed to add card!");
 	}
 };
@@ -63,8 +60,8 @@ export const saveDeckTitle = (deck, title) => {
 					questions: [],
 				},
 			})
-		).then((result) => console.log(result));
-	} catch (e) {
+		);
+	} catch {
 		alert("Failed to add deck!");
 	}
 };
@@ -81,5 +78,15 @@ export const removeDeck = (title) => {
 		});
 	} catch {
 		alert("Failed to delete deck!");
+	}
+};
+
+export const resetData = () => {
+	try {
+		return AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(initialData)).then(() =>
+			alert("Data successfully reseted!")
+		);
+	} catch {
+		alert("Failed to reset data!");
 	}
 };
