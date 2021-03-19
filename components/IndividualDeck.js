@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import { HeaderBackButton } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { Divider } from "react-native-elements";
 import { removeDeck } from "../utils/api";
 
 export default function IndividualDeck({ navigation, route }) {
-	const { deckTitle, numberOfCards } = route.params;
+	const { deckTitle, numberOfCards, isNewDeck } = route.params;
 
+	useLayoutEffect(() => {
+		if (isNewDeck === true) {
+			navigation.setOptions({
+				headerLeft: () => (
+					<HeaderBackButton
+						label="Deck List"
+						tintColor="#fff"
+						onPress={() => navigation.navigate("Home")}
+					/>
+				),
+			});
+		}
+	}, [navigation]);
 	const handleDeleteDeck = (deckTitle) => {
 		const deck = deckTitle.replace(/ /g, "");
 		return removeDeck(deck).then(() => navigation.navigate("Home"));
@@ -41,7 +55,20 @@ export default function IndividualDeck({ navigation, route }) {
 				>
 					<Text style={[styles.buttonText, { color: "white" }]}>Start Quiz</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.delete} onPress={() => handleDeleteDeck(deckTitle)}>
+				<TouchableOpacity
+					style={styles.delete}
+					onPress={() =>
+						Alert.alert("Delete Deck?", "Are you sure you want to delete this deck?", [
+							{
+								text: "Cancel",
+							},
+							{
+								text: "Delete",
+								onPress: () => handleDeleteDeck(deckTitle),
+							},
+						])
+					}
+				>
 					<Text style={styles.deleteText}>Delete Deck</Text>
 				</TouchableOpacity>
 			</View>
