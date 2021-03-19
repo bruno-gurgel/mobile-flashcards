@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Button } from "react-native";
 import DeckList from "./components/DeckList";
 import { createStackNavigator, HeaderBackButton } from "@react-navigation/stack";
 import IndividualDeck from "./components/IndividualDeck";
@@ -9,6 +9,7 @@ import NewCard from "./components/NewCard";
 import { setLocalNotification } from "./utils/helpers";
 import Quiz from "./components/Quiz";
 import Score from "./components/Score";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -45,6 +46,13 @@ export default function App() {
 							backgroundColor: "#444",
 						},
 						headerTintColor: "#fff",
+						headerLeft: () => (
+							<HeaderBackButton
+								label="Deck List"
+								tintColor="#fff"
+								onPress={() => navigation.navigate("Home")}
+							/>
+						),
 					}}
 				/>
 				<Stack.Screen
@@ -102,12 +110,3 @@ export default function App() {
 		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});

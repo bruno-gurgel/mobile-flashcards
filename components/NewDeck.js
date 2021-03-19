@@ -9,7 +9,13 @@ export default function NewDeck({ navigation }) {
 
 	const handleSubmit = async () => {
 		const trimmedInput = input.replace(/ /g, "");
-		return saveDeckTitle(trimmedInput, input).then(() => navigation.navigate("Home"));
+		return saveDeckTitle(trimmedInput, input).then(() =>
+			navigation.navigate("Deck", {
+				deckTitle: input,
+				numberOfCards: 0,
+				isNewDeck: true,
+			})
+		);
 	};
 
 	return (
@@ -25,7 +31,7 @@ export default function NewDeck({ navigation }) {
 				disabled={isDisabled()}
 				onPress={handleSubmit}
 			>
-				<Text style={styles.buttonText}>Submit</Text>
+				<Text style={styles.buttonText}>Create Deck</Text>
 			</TouchableOpacity>
 		</KeyboardAvoidingView>
 	);
