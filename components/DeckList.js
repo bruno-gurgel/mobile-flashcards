@@ -18,7 +18,7 @@ export default function DeckList({ navigation }) {
 								text: "Cancel",
 							},
 							{
-								text: "Delete",
+								text: "Reset",
 								onPress: () => resetData().then(() => fetchData()),
 							},
 						])
@@ -71,12 +71,16 @@ export default function DeckList({ navigation }) {
 				Total decks:
 				<Text style={styles.totalDecks__number}> {decks && Object.keys(decks).length}</Text>
 			</Text>
-			{!isLoading && decks ? (
+			{!isLoading && Object.keys(decks).length > 0 ? (
 				<FlatList
 					data={Object.keys(decks)}
 					renderItem={renderItem}
 					keyExtractor={(item) => decks[item].id}
 				/>
+			) : Object.keys(decks).length === 0 ? (
+				<View style={styles.noDecks}>
+					<Text style={styles.noDecksText}>You don't have decks!</Text>
+				</View>
 			) : (
 				<Text>Loading...</Text>
 			)}
@@ -122,5 +126,14 @@ const styles = StyleSheet.create({
 	deleteText: {
 		alignSelf: "center",
 		fontSize: 16,
+	},
+	noDecks: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	noDecksText: {
+		fontWeight: "bold",
+		fontSize: 30,
 	},
 });
