@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Input } from "react-native-elements";
-import { saveDeckTitle } from "../utils/api";
+import { getDecks, saveDeckTitle } from "../utils/api";
 
-export default function NewDeck({ navigation }) {
+export default function NewDeck({ navigation, route }) {
+	const { decks } = route.params;
+	console.log(decks);
 	const [input, updateInput] = useState("");
 	const isDisabled = () => (input === "" ? true : false);
 
-	const handleSubmit = async () => {
-		const trimmedInput = input.replace(/ /g, "");
-		return saveDeckTitle(trimmedInput, input).then(() =>
-			navigation.navigate("Deck", {
-				deckTitle: input,
-				numberOfCards: 0,
-				isNewDeck: true,
-			})
-		);
+	const handleSubmit = () => {
+		getDecks().then((allDecks) => {
+			const trimmedInput = input.replace(/ /g, "");
+			if (!allDecks[trimmedInput]) {
+				return saveDeckTitle(trimmedInput, input).then(() =>
+					navigation.navigate("Deck", {
+						deckTitle: input,
+						numberOfCards: 0,
+						isNewDeck: true,
+					})
+				);
+			} else {
+				alert("There is already a Deck with this title. Please choose another name.");
+			}
+		});
 	};
 
 	return (
