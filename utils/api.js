@@ -3,21 +3,11 @@ import { initialData } from "./_DATA";
 import { generateID } from "./helpers";
 import { DECKS_STORAGE_KEY } from "./helpers";
 
-export const handleInitialData = async () => {
-	try {
-		const savedData = await AsyncStorage.setItem(
-			DECKS_STORAGE_KEY,
-			JSON.stringify(initialData)
-		);
-		return savedData;
-	} catch {
-		alert("Failed to save data.");
-	}
-};
-
 export const getDecks = () =>
 	AsyncStorage.getItem(DECKS_STORAGE_KEY).then((data) =>
-		data ? JSON.parse(data) : handleInitialData()
+		data
+			? JSON.parse(data)
+			: AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(initialData))
 	);
 
 export const getDeck = (id) => {
