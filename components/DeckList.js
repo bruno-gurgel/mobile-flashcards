@@ -36,8 +36,15 @@ export default function DeckList({ navigation }) {
 	const fetchData = () => {
 		updateIsLoading(true);
 		getDecks().then((allDecks) => {
-			updateDecks(allDecks);
-			updateIsLoading(false);
+			if (allDecks !== null) {
+				updateDecks(allDecks);
+				updateIsLoading(false);
+			} else {
+				getDecks().then((allDecks) => {
+					updateDecks(allDecks);
+					updateIsLoading(false);
+				});
+			}
 		});
 	};
 
@@ -69,9 +76,11 @@ export default function DeckList({ navigation }) {
 		<View style={styles.container}>
 			<Text style={styles.totalDecks}>
 				Total decks:
-				<Text style={styles.totalDecks__number}> {decks && Object.keys(decks).length}</Text>
+				<Text style={styles.totalDecks__number}>
+					{decks && Object.keys(decks).length > 0 && Object.keys(decks).length}
+				</Text>
 			</Text>
-			{!isLoading && Object.keys(decks).length > 0 ? (
+			{!isLoading && decks && Object.keys(decks).length > 0 ? (
 				<FlatList
 					data={Object.keys(decks)}
 					renderItem={renderItem}
