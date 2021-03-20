@@ -47,16 +47,19 @@ export default function Quiz({ route, navigation }) {
 		}
 		answerCheck(answer);
 		updateIsQuestion(false);
-		clearLocalNotification().then(() => setLocalNotification());
 	};
 
 	const handleNextCard = () => {
 		if (index + 1 === deckLength()) {
-			return navigation.navigate("Score", {
-				correctAnswers: correct,
-				incorrectAnswers: incorrect,
-				deckTitle,
-			});
+			return clearLocalNotification()
+				.then(() => setLocalNotification())
+				.then(() =>
+					navigation.navigate("Score", {
+						correctAnswers: correct,
+						incorrectAnswers: incorrect,
+						deckTitle,
+					})
+				);
 		}
 		if (index + 2 === deckLength() || deckLength() === 1) {
 			updateButtonText("Show Score");
