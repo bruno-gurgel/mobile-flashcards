@@ -32,7 +32,11 @@ export default function App() {
 							<Button
 								title="Add"
 								color="#00ccff"
-								onPress={() => navigation.navigate("NewDeck")}
+								onPress={() =>
+									navigation.navigate("NewDeck", {
+										decks,
+									})
+								}
 							/>
 						),
 					})}
@@ -40,7 +44,7 @@ export default function App() {
 				<Stack.Screen
 					name="NewDeck"
 					component={NewDeck}
-					options={{
+					options={({ navigation }) => ({
 						title: "Add Deck",
 						headerStyle: {
 							backgroundColor: "#444",
@@ -53,7 +57,7 @@ export default function App() {
 								onPress={() => navigation.navigate("Home")}
 							/>
 						),
-					}}
+					})}
 				/>
 				<Stack.Screen
 					name="Deck"
